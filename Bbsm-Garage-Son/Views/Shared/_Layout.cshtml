@@ -1,0 +1,71 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <title>BBSM Garage</title>
+    <link rel="icon" href="/bbsm.ico" /> 
+</head>
+
+<body>
+        <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+          <div class="px-3 py-3 lg:px-5 lg:pl-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <a href="#" class="flex ml-2 md:mr-8 lg:mr-24">
+                  <img src="~/images/bbsmlogo.jpg" class="h-8 mr-3" alt="logo" />
+                  <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-my-siyah">BBSM GARAGE</span>
+                </a>
+              </div>
+              <div class="flex items-center">
+                <button type="button" class="flex items-center text-sm"><span class="sr-only">Open user menu</span><p class="text-center text-my-siyah font-semibold items-center pr-8">Samet Yıldırım</p><img src="~/images/images.jpg" class="h-16 w-16 rounded-full" alt="Yasin Bey" /></button>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+
+    <aside class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 lg:translate-x-0" aria-label="Sidebar">
+        <div class="h-full px-4 pt-6 pb-4 text-center overflow-y-auto bg-my-beyaz">
+            <ul class="space-y-4 p-4">
+                <li>
+                  @using (Html.BeginForm("Index", "MainPage", FormMethod.Post, new { id = "Fonk" })) {
+                    <button class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Kartlar</button>
+                  }
+                </li>
+                <li>
+                  @using (Html.BeginForm("Index", "Teklif", FormMethod.Post, new { id = "Fonk" })) {
+                    <button class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Teklif</button>
+                    }
+                </li>
+                <li>
+                  @using (Html.BeginForm("Index", "Stok", FormMethod.Post, new { id = "Fonk" })) {
+                    <button class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Stok Takibi</button>
+                  }
+                </li>
+                <li>
+                  @using (Html.BeginForm("Index", "BizeUlasin", FormMethod.Post, new { id = "Fonk" })) {
+                    <button class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Bize Ulaşın</button>
+                  }
+                </li>
+                <div class="divider mt-10 mb-10 font-thin">-------------------------</div>
+                <li>
+                  @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { id = "Fonk" })) {
+                    <button class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Çıkış Yap</button>
+                  }
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <!-- Sidebar içeriği buraya gelecek -->
+    <div class="content">
+        @RenderBody()
+    </div>
+</body>
+
+
+
+    <!-- Alt bilgi (footer) ve diğer ortak içerikler buraya -->
+</html>
+

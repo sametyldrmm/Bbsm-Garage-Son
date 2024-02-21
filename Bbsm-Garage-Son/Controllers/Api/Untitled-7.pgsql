@@ -1,0 +1,1 @@
+SELECT * FROM "CardTwoStageEntity" LIMIT 1000;

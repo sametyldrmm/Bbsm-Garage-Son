@@ -1,0 +1,35 @@
+yapılacaklar
+
+1) Stok takibi
+2) kullanıcı oluştur db de kullanıcı id koy her birine db yi sil sıfırdan yap
+3) kartlar db sine teklif bool u koy
+4) servise teklif booluna göre search get fonk koy
+5) stok ekle çıkarı düzelt en sonki tik olayını değiştiriyo
+4) servise teklif booluna göre search get fonk koy
+
+
+Kalanlar
+kalmadı
+
+2.yapılacklar
+Elindeki kodları güncelle kullanıcıya göre tabloları çek
+StokService yaz
+
+Kalanlar
+StokService yaz
+
+3.yapılacaklar
+Yeni Teklif Ekle // en son
+Update fonksiyonları yazılacak. 
+Detaya eklenecek.
+
+Stok için (varsa (değişiklik varmı bak yoksa  update yap) yoksa ekle) yazılacak.
+
+Kalanlar
+
+
+
+
+// güzelleştirme kod 
+
+js de ortak kullanılan yapılar doğru isimlendirmeler ile include edilecek.

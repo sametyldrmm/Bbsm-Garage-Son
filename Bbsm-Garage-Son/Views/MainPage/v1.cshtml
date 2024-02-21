@@ -1,0 +1,262 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+    int index = 0;
+}
+
+@using Bbsm_Garage_Son.Models;
+@model KartEkleModel;
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+</head>
+<aside class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 lg:translate-x-0" aria-label="Sidebar">
+        <div class="h-full px-4 pt-6 pb-4 text-center overflow-y-auto bg-my-beyaz">
+          <ul class="space-y-4 p-4">
+            <li>
+              <button href="#" class="w-full p-2 text-md border-2 border-my-açıkgri font-bold text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Kartlar</button>
+            </li>
+            <li>
+              <button href="/login/teklif" class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Teklif</button>
+            </li>
+            <li>
+              <button href="/login/stok" class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Stok Takibi</button>
+            </li>
+            <li>
+              <button href="/login/bizeulasin" class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Bize Ulaşın</button>
+            </li>
+            <div class="divider mt-10 mb-10 font-thin">-------------------------</div>
+            <li>
+              <button href="/" class="w-full p-2 font-medium text-md text-my-açıkgri focus:border-2 focus:border-my-açıkgri focus:font-bold focus:text-my-4b4b4bgri bg-my-ebbeyaz rounded-xl hover:text-my-beyaz hover:bg-my-siyah group">Çıkış Yap</button>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+
+      <div class="flex-1 flex flex-col">
+
+        <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+          <div class="px-3 py-3 lg:px-5 lg:pl-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <a href="#" class="flex ml-2 md:mr-8 lg:mr-24">
+                  <img src="/images/ESESlogo.webp" class="h-8 mr-3" alt="logo" />
+                  <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-my-siyah">BBSM GARAGE</span>
+                </a>
+              </div>
+              <div class="flex items-center">
+                <button type="button" class="flex items-center text-sm"><span class="sr-only">Open user menu</span><p class="text-center text-my-siyah font-semibold items-center pr-8">Yasin Ufuk ORHANLAR</p><img src="/images/yasin.png" class="h-16 w-16 rounded-full" alt="Yasin Bey" /></button>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <div class="p-6 pt-8 lg:ml-64 ">
+          <div class="p-6 mt-20 bg-my-beyaz rounded-3xl">
+            <div class="flex items-center pb-4 justify-between">
+              <div class="flex items-center">
+                <div class="pr-4 items-center ">
+                  <div class="flex flex-column sm:flex-row flex-wrap items-center justify-between ">
+                    <p class="font-bold text-xl text-my-siyah">Kartlarım</p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="items-center bg-red-600 p-2 pl-4 pr-4 rounded-full ml-4">
+                  <button onClick={silSecilenleri} class="font-semibold text-my-beyaz text-md">Seçilenleri Sil</button>
+                </div>
+                <div class="items-center bg-green-500 p-2 pl-4 pr-4 rounded-full ml-4">
+                  <button href="" class="font-semibold text-my-beyaz text-md">Seçilenleri İndir</button>
+                </div>
+
+                <div class="items-center bg-my-mavi p-2 pl-4 pr-4 rounded-full ml-4">
+                <div class="">
+                  <!-- Trigger Button -->
+                  <button id="openContactForm" class=" text-my-beyaz text-md font-semibold rounded"> Yeni Kart Ekle</button>
+                  <!-- Modal -->
+                  <div id="contactFormModal" class="fixed bg-gray-500 bg-opacity-50 backdrop-blur-sm backdrop-brightness-30 rounded-3xl z-10 inset-0 overflow-y-auto hidden">
+                    <div class="flex items-center justify-center min-h-screen">
+                      <div class="bg-white w-1/2 pl-6 pr-6 p-6 rounded-3xl shadow-md">
+                        <div class="flex justify-end">  
+                          <!-- Close Button -->
+                          <button id="closeContactForm" class="text-gray-700 hover:text-red-500">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                          </button>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-4">Kart Ekle</h2>
+                          @using (Html.BeginForm("Ekle", "MainPage", FormMethod.Post))
+                          {
+                          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input    type="text"   name="adSoyad"     id="AdSoyad" placeholder="Ad Soyad" class="bg-my-beyaz border p-2 rounded-md"  />
+                            <input    type="number" name="TelNo"       id="TelNo" placeholder="telefon no" pattern="\d{10}"  class="bg-my-beyaz border p-2 rounded-md"  />
+                            <input    type="text"   name="MarkaModel"  id="MarkaModel" placeholder="Marka Model"  class="bg-my-beyaz border p-2 rounded-md" />
+                            <input    type="date"   name="GirisTarihi" id="GirisTarihi" placeholder="Giriş Tarihi" class="bg-my-beyaz border p-2 rounded-md" />
+                            <input    type="text"   name="Plaka"       id="Plaka" placeholder="Plaka"   class="bg-my-beyaz border p-2 rounded-md" />
+                            <input    type="number" name="Km"          id="Km" placeholder="Km"  class="bg-my-beyaz border p-2 rounded-md" />
+                            <input    type="text"   name="Sasi"        id="Sasi" placeholder="Şasi No"  class="bg-my-beyaz border p-2 rounded-md col-span-2" />
+                            <input    type="number" name="ModelYili"   id="ModelYili" placeholder="Model Yılı"  class="bg-my-beyaz border p-2 rounded-md" />
+                            <input    type="text"   name="Renk"        id="Renk" placeholder="Rengi"  class="bg-my-beyaz border p-2 rounded-md" />
+                            <textarea type="text"   name="adres"       id="adres" placeholder="Adres" class="bg-my-beyaz border p-2 rounded-md" rows="3"></textarea>
+                            <textarea type="text"   name="notlar"      id="notlar" placeholder="Notlar" class="bg-my-beyaz border p-2 rounded-md" rows="3"></textarea>
+                          </div>
+
+                          <div class="flex justify-between mt-8">
+                            <button type="button" class="bg-my-açıkgri text-white font-semibold rounded-full p-2 pl-8 pr-8 ">İptal</button>
+                            <button type="button" class="bg-red-500 text-white font-semibold rounded-full p-2 pl-8 pr-8 ">   Formu Temizle</button>
+                            <button type="submit" id="openContactForm2"  class="bg-my-mavi text-white font-semibold rounded-full p-2 pl-8 pr-8 ">  İleri</button>
+                          </div>
+                          }    
+                        </div>
+                      </div>
+                    </div>
+                  </div>            
+                </div>                
+                <div class="pr-4 items-center pl-4">
+                  <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
+                    <label htmlFor="table-search" class="sr-only">Search</label>
+                    <div class="relative">
+                      <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500 " aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
+                      </div>
+                      <input type="text" id="table-search"
+                        class="block p-2 ps-10 text-md text-gray-900 border border-gray-300 rounded-full w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Kartları ara"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="overflow-auto h-140">
+          <table class="w-full text-sm text-left text-gray-500 font-medium">
+                <thead class="text-xs text-gray-600 uppercase bg-my-edbeyaz">
+                    <tr>
+                        <th scope="col" class="p-4"></th>
+
+                        <th scope="col" class="px-6 py-3">
+                            Ad-Soyad
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Marka-Model
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Plaka
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Km
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Şasİ No
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Giriş Tarihi
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Görüntüle
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            İndİr
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @using (Html.BeginForm("Sil", "MainPage", FormMethod.Post))
+                    {
+                        index = 0;
+                        @foreach (var qwe in ViewBag.Kartlar)
+                    {
+                        <tr>
+                            <td class="w-4 p-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" data-id="@qwe.Id" />
+                                    <input type="hidden" name="SelectedKartIds[@index]" value="" />
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                @qwe.adSoyad
+                            </td>
+                            <td class="px-6 py-4">
+                                @qwe.markaModel
+                            </td>
+                            <td class="px-6 py-4 text-green-500">
+                                @qwe.plaka
+                            </td>
+                            <td class="px-6 py-4">
+                                @qwe.km
+                            </td>
+                            <td class="px-6 py-4 uppercase">
+                                @qwe.sasi
+                            </td>
+                            <td class="px-6 py-4 text-blue-500">
+                                @qwe.girisTarihi
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="#" class="bg-yellow-500 p-2 pl-4 pr-4 rounded-full font-medium text-my-siyah hover:underline">Detay</a>
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="#" class="bg-green-500 p-2 pl-4 pr-4 rounded-full font-medium text-my-beyaz hover:underline">Excel</a>
+                            </td>
+                            </tr>
+                        }
+
+                        index++;
+                    }
+
+                </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+<script>
+    document.querySelectorAll('.checkbox').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            var hiddenInput = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                hiddenInput.value = checkbox.getAttribute('data-id');
+            } else {
+                hiddenInput.value = '';
+            }
+        });
+    });
+
+  function handleClearForm()
+  {
+    
+  }
+    // JavaScript to toggle the modal
+    const openContactFormButton = document.getElementById('openContactForm');
+    const closeContactFormButton = document.getElementById('closeContactForm');
+    const contactFormModal = document.getElementById('contactFormModal');
+
+    openContactFormButton.addEventListener('click', () => {
+        contactFormModal.classList.remove('hidden');
+    });
+
+    closeContactFormButton.addEventListener('click', () => {
+        contactFormModal.classList.add('hidden');
+    });
+
+    const openContactFormButton2 = document.getElementById('openContactForm2');
+    const closeContactFormButton2 = document.getElementById('closeContactForm2');
+    const contactFormModal2 = document.getElementById('contactFormModal2');
+
+    openContactFormButton2.addEventListener('click', () => {
+        contactFormModal2.classList.remove('hidden');
+    });
+
+    closeContactFormButton.addEventListener('click', () => {
+        contactFormModal.classList.add('hidden');
+    });
+
+
+</script>

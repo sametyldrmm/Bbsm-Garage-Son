@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+:root{
+    background: #ebebeb
+    ;
+}
+
+.toast {
+    position: absolute;
+  }
+
+.divider{
+    height: 1rem;
+}
+
+.wrapper{
+    display:grid;
+    height:100vh;
+    place-items:center
+  }

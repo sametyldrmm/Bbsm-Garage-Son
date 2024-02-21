@@ -1,0 +1,270 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+      // Layout = null;
+    int index = 0;
+}
+
+
+@using Bbsm_Garage_Son.Models;
+@model KartEkleModel;
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <title>BBSM Garage - Teklif</title>
+    <link rel="icon" href="/bbsm.ico" /> 
+</head>
+
+
+        <div class="flex-1 flex flex-col">
+
+          <div class="p-6 pt-8 lg:ml-64 ">
+            <div class="p-6 mt-20 bg-my-beyaz rounded-3xl">
+              <div class="flex items-center pb-4 justify-between">
+                
+                <div class="flex items-center">
+                  <div class="pr-4 items-center ">
+                    <div class="flex flex-column sm:flex-row flex-wrap items-center justify-between ">
+                      <p class="font-bold text-xl text-my-siyah">Tekliflerim</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center">
+                  <div class="items-center bg-red-600 p-2 pl-4 pr-4 rounded-full ml-4">
+                    <button type="button" onclick="secilenleriSil()"  class="font-semibold text-my-beyaz text-md">Seçilenleri Sil</button>
+                  </div>
+                  <div class="items-center bg-green-500 p-2 pl-4 pr-4 rounded-full ml-4">
+                    <button type="button" class="font-semibold text-my-beyaz text-md">Seçilenleri İndir</button>
+                  </div>
+
+                  <div class="pr-4 items-center pl-4">
+                    <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
+                      <label htmlFor="table-search" class="sr-only">Search</label>
+                      <div class="relative">
+                        <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                          <svg class="w-5 h-5 text-gray-500 " aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
+                        </div>
+                        <input type="text" id="table-search" class="block p-2 ps-10 text-md text-gray-900 border border-gray-300 rounded-full w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for items"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <table class="w-full text-sm text-left text-gray-500 font-medium">
+                <thead class="text-xs text-gray-600 uppercase bg-my-edbeyaz">
+                  <tr>
+                    <th scope="col" class="p-4">
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Ad-Soyad
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Marka-Model
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Plaka
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Şasİ No
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Giriş Tarihi
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Kartlara Ekle
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Görüntüle
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      İndİr
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @using (Html.BeginForm("Sil", "MainPage", FormMethod.Post, new { id = "SilmeFonk" }))
+                    {
+                        index = 0;
+                        @foreach (var qwe in ViewBag.Kartlar)
+                          {
+                  <tr>
+                    <td class="w-4 p-4">
+                      <div class="flex items-center">
+                        <input type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" data-id="@qwe.Id" />
+                        @* <input id="@qwe.id-checkbox" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 " data-id=@qwe.id/> *@
+                        <input type="hidden" name="SelectedKartIds[@index]" value="" />
+                        @* <label htmlFor="@qwe.id-checkbox" class="sr-only">checkbox</label> *@
+                      </div>
+                    </td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                      @qwe.adSoyad
+                    </th>
+                    <td class="px-6 py-4">
+                      @qwe.markaModel
+                    </td>
+                    <td class="px-6 py-4 text-green-500">
+                      @qwe.plaka
+                    </td>
+                    <td class="px-6 py-4 uppercase">
+                      @qwe.sasi
+                    </td>
+                    <td class="px-6 py-4 text-blue-500">
+                      @qwe.girisTarihi
+                    </td>
+                    <td class="px-6 py-4">
+                      <button type="button" onclick="DetaydanKarta(@qwe.Id)" class="bg-yellow-500 p-2 pl-4 pr-4 rounded-full font-medium text-my-siyah hover:underline">Karlara Ekle</button>
+                    </td>
+                    <td class="px-6 py-4">
+                      <form action="/Detay" method="post">
+                        <button type="button" onclick="submitDetayForm(@qwe.Id)" class="bg-yellow-500 p-2 pl-4 pr-4 rounded-full font-medium text-my-siyah hover:underline">Detay</button>
+                      </form>
+                    </td>
+                    <td class="px-6 py-4">
+                      <button  class="bg-green-500 p-2 pl-4 pr-4 rounded-full font-medium text-my-beyaz  hover:underline">Excel</button>
+                    </td>
+                  </tr>
+                  
+                    }
+                    index++;          
+                  }
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+        </div>
+      
+
+  
+<script>
+var cookies = document.cookie.split(';');
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.startsWith("auth_token=")) {
+        var authToken = cookie.substring("auth_token=".length, cookie.length);
+        // authToken değişkeni artık auth_token adlı cookie'nin değerini içerir
+        console.log("Auth Token: " + authToken);
+        break; // Gerekirse, aramayı durdurabilirsiniz
+    }
+}
+
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.startsWith("id=")) {
+        var user_id = cookie.substring("id=".length, cookie.length);
+        // authToken değişkeni artık auth_token adlı cookie'nin değerini içerir
+        console.log("User: " + user_id);
+        break; // Gerekirse, aramayı durdurabilirsiniz
+    }
+}
+
+let silineceklerKartList  = []; // int list
+
+  function deleteCardFetch(id) {
+    fetch(`http://localhost:5184/api/CardEntities/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Kart başarıyla silindi:', data);
+        // Kartın başarıyla silindiği bildirimi veya diğer gerekli işlemler burada yapılabilir.
+    })
+    .catch(error => {
+        console.error('Kart silinirken bir hata oluştu:', error);
+        // Hata durumunda kullanıcıya bir hata mesajı gösterilebilir veya diğer işlemler yapılabilir.
+    });
+}
+
+async function secilenleriSil()
+{
+    var checkboxler = document.querySelectorAll('input[type="checkbox"]');
+    checkboxler.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            var kartId = checkbox.getAttribute('data-id');
+            console.log(kartId);
+            deleteCardFetch(kartId);
+        }
+    });
+    window.location.href = "/Teklif/Index";
+
+}
+function blabla2(id,value)
+{
+  value.teklif = false;
+  console.log(value);
+  console.log(value);
+  console.log(value);
+  console.log(value);
+    fetch('http://localhost:5184/api/CardEntities/', {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(value)
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {  
+      console.log('asama2 başarılı:', data);
+  })
+  .catch(error => {
+      
+  }); 
+}
+function blabla(id)
+{
+  fetch('http://localhost:5184/api/CardEntities/'+String(id), {
+      method: 'GET',
+      headers: {
+      },
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {  
+    var value = data; // value değişkenini tanımlayın
+    console.log(data);
+    blabla2(id,value);
+  })
+  .catch(error => {
+      console.error('get hatası:', error);
+  }); 
+
+}
+
+async function  DetaydanKarta(id)
+{
+  var de = await blabla(id);
+  console.log(de);
+  window.location.href = "/Teklif/Index";
+}
+
+function submitDetayForm(id) {
+    var detayUrl = '/Detay/Index?id=' + id;
+    // Tarayıcıyı belirtilen URL'ye yönlendirme yapılır
+    window.location.href = detayUrl;
+}
+  
+
+
+
+</script>

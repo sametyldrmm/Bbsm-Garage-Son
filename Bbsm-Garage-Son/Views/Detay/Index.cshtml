@@ -1,0 +1,224 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <title>BBSM Garage - Detaylar</title>
+    <link rel="icon" href="/bbsm.ico" /> 
+</head>
+<body>
+
+
+<div class="mt-28 ml-64 p-8">
+  <div class="w-11/12 mx-auto bg-my-beyaz p-8 rounded-3xl shadow">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800">Kart Detayları</h2>
+      </div>
+      <p class="text-my-siyah font-semibold">Tarih: 28/03/2023</p>
+      <div>
+
+      <button type="button" onclick="Kaydet()" class="bg-my-mavi text-my-beyaz font-bold text-sm px-4 py-2 rounded-full">Kaydet</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <input    type="text"   name="adSoyad"     id="AdSoyad" placeholder="Ad Soyad" class="bg-my-beyaz border p-2 rounded-md"  />
+      <input    type="number" name="TelNo"       id="TelNo" placeholder="telefon no" pattern="\d{10}"  class="bg-my-beyaz border p-2 rounded-md"  />
+      <input    type="text"   name="MarkaModel"  id="MarkaModel" placeholder="Marka Model"  class="bg-my-beyaz border p-2 rounded-md" />
+      <input    type="date"   name="GirisTarihi" id="GirisTarihi" placeholder="Giriş Tarihi" class="bg-my-beyaz border p-2 rounded-md" />
+      <input    type="text"   name="Plaka"       id="Plaka" placeholder="Plaka"   class="bg-my-beyaz border p-2 rounded-md" />
+      <input    type="number" name="Km"          id="Km" placeholder="Km"  class="bg-my-beyaz border p-2 rounded-md" />
+      <input    type="text"   name="Sasi"        id="Sasi" placeholder="Şasi No"  class="bg-my-beyaz border p-2 rounded-md col-span-2" />
+      <input    type="number" name="ModelYili"   id="ModelYili" placeholder="Model Yılı"  class="bg-my-beyaz border p-2 rounded-md" />
+      <input    type="text"   name="Renk"        id="Renk" placeholder="Rengi"  class="bg-my-beyaz border p-2 rounded-md" />
+      <textarea type="text"   name="adres"       id="adres" placeholder="Adres" class="bg-my-beyaz border p-2 rounded-md" rows="3"></textarea>
+      <textarea type="text"   name="notlar"      id="notlar" placeholder="Notlar" class="bg-my-beyaz border p-2 rounded-md" rows="3"></textarea>
+    </div>
+    <button id="myButton" onclick="testttttttt()" class="bg-red-600 p-2 pl-4 pr-4 w-32 justify-end rounded-full mb-4 font-semibold text-my-beyaz text-md">Seçilenleri Sil</button>
+    <table class="min-w-full table-auto">
+      <thead  class=" bg-my-edbeyaz">
+        <tr>
+          <th class="w-4 p-4">
+                
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-my-açıkgri uppercase tracking-wider">
+            Birim Adedi
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-my-açıkgri uppercase tracking-wider">
+            Parça Adı
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-my-açıkgri uppercase tracking-wider">
+            Birim Fiyatı
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-my-açıkgri uppercase tracking-wider">
+            Fiyat
+          </th>
+        </tr>
+      </thead>
+      <tbody id="KartEkleAsama2Gövdesi" class="bg-white divide-y divide-gray-200">
+            @* js ile ekleniyor id üzerinden *@
+      </tbody>
+    </table>    
+
+    <div class="mt-6 flex justify-end">
+      <span class="text-xl font-semibold text-gray-900">Toplam Fiyat: 12.350,00 ₺</span>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+var myDataJson = '@Html.Raw(@ViewBag.detay)';
+var myData = JSON.parse(myDataJson);
+var KartEkleAsama2List = myData.KartAsama2List;
+var Kart = myData.Kartlar;
+
+
+function handleInputChange(kartId, elementId) {
+    var inputValue = document.getElementById(elementId).value;
+    KartEkleAsama2List.forEach(function(kart) {
+        if (kart.id === parseInt(kartId)) {
+            // ID'ye göre hangi özellik güncelleniyor, onu belirleyin
+            var propertyToUpdate = elementId.replace(kartId + '-', '');
+            kart[propertyToUpdate] = inputValue;
+            tabloyuGuncelleAsama2();
+        }
+    }); 
+}
+
+function stokUpdateDbFetch(value) {
+    return fetch('http://localhost:5184/api/CardEntities/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(value)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json()
+    })
+    .then(data => {
+        console.log('İsteğin gönderilmesi başarılı:', data);
+        return data;
+    })
+    .catch(error => {
+        console.error('İsteğin gönderilmesinde hata:', error);
+    });
+}
+
+function stokUpdateCardTwoDbFetch(value) {
+    return fetch('http://localhost:5184/api/CardEntities/TwoStageData/' ,{
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(value)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('İsteğin gönderilmesi başarılı:', data);
+        return data;
+    })
+    .catch(error => {
+        console.error('İsteğin gönderilmesinde hata:', error);
+    });
+}
+
+async function Kaydet()
+{
+  console.log(KartEkleAsama2List);
+  stokUpdateDbFetch(Kart);
+
+    console.log("aaa");
+}
+
+function testttttttt()
+{
+
+}
+
+function tabloyuGuncelleAsama2() {
+    var tabloGovdesi = document.getElementById('KartEkleAsama2Gövdesi');
+    var tabloHtml = '';
+
+    KartEkleAsama2List.forEach(function(kart) {
+        tabloHtml += `<tr>
+            <td class="w-4 p-4">
+                <div class="flex items-center">
+                    <input id="${kart.id}-check" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"  />
+                    <input type="hidden"  value="" />
+                </div>
+            </td>
+            <td>
+                <input id="${kart.id}-birimAdedi" onChange="handleInputChange('${kart.id}', '${kart.id}-birimAdedi')" value="${kart.birimAdedi}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+            </td>
+            <td>
+                <input id="${kart.id}-parcaAdi" onChange="handleInputChange('${kart.id}', '${kart.id}-parcaAdi')" value="${kart.parcaAdi}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            </td>
+            <td>
+                <input id="${kart.id}-birimFiyati" onChange="handleInputChange('${kart.id}', '${kart.id}-birimFiyati')" value="${kart.birimFiyati}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            </td>  
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">${kart.birimFiyati * kart.birimAdedi}
+            </td>    
+        </tr>`;
+    });
+
+    tabloGovdesi.innerHTML = tabloHtml;
+}
+tabloyuGuncelleAsama2();
+
+
+function KartEkleAsama1TableTemizle(){
+document.getElementById('AdSoyad').value = "";
+document.getElementById('TelNo').value = "";
+document.getElementById('MarkaModel').value = "";
+document.getElementById('GirisTarihi').value = "";
+document.getElementById('Plaka').value = "";
+document.getElementById('Km').value = "";
+document.getElementById('Sasi').value = "";
+document.getElementById('ModelYili').value = "";
+document.getElementById('Renk').value = "";
+document.getElementById('adres').value = "";
+document.getElementById('notlar').value = "";
+Kart = {};
+}
+
+function KartGüncelle()
+{
+  document.getElementById('AdSoyad').value = Kart.AdSoyad;
+  document.getElementById('TelNo').value = Kart.TelNo
+  document.getElementById('MarkaModel').value = Kart.MarkaModel;
+  document.getElementById('GirisTarihi').value = Kart.GirisTarihi;
+  document.getElementById('Plaka').value = Kart.Plaka;
+  document.getElementById('Km').value = Kart.Km;
+  document.getElementById('Sasi').value = Kart.Sasi;
+  document.getElementById('ModelYili').value = Kart.ModelYili;
+  document.getElementById('Renk').value = Kart.Renk;
+  document.getElementById('adres').value = Kart.Adres;
+  document.getElementById('notlar').value = Kart.Notlar; 
+}
+
+KartGüncelle();
+</script>
+
+</body>
+
+</html>
+
+

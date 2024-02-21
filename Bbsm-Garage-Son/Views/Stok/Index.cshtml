@@ -1,0 +1,422 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBSM Garage - Stok Takip</title>
+    <link rel="icon" href="/bbsm.ico" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+</head>
+<body>
+
+<div class="flex-1 flex flex-col">
+    <!-- Stok Ekle -->
+    <div class="p-6 pt-8 lg:ml-64 ">
+        <div class="p-6 mt-20 bg-my-beyaz rounded-3xl">
+            <div class="flex items-center pb-4">
+                <p class="font-bold text-xl text-my-siyah">Stok Ekle</p>
+            </div>
+            <form onSubmit={handleSubmit} class="p-2">
+                <div class="grid gap-6 mb-4 md:grid-cols-3">
+                    <div>
+                        <label htmlFor="text" class="block mb-2 text-sm font-medium text-gray-900">Stok Adı</label>
+                        <input type="text" id="EkleStokAdi" class="bg-my-beyaz border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Stok Adı Giriniz" required/>
+                    </div>
+                    <div>
+                        <label htmlFor="number" class="block mb-2 text-sm font-medium text-gray-900 ">Adet</label>
+                        <input type="number" id="EkleStokAdet" class="bg-my-beyaz border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Adet Giriniz" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  required/>
+                    </div>
+                    <div>
+                        <label htmlFor="date" class="block mb-2 text-sm font-medium text-gray-900 ">Ekleniş Tarihi</label>
+                        <input type="date" id="EkleStokTarih" class="bg-my-beyaz border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Ekleniş Tarihi Giriniz"  required/>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label htmlFor="text" class="block mb-2 text-sm font-medium text-gray-900">Açıklama</label>
+                    <input type="text" id="EkleStokAciklama" class="bg-my-beyaz border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Açıklama Giriniz ..."    required/>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" onclick="StokAddDb()" class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full sm:w-auto px-5 py-2.5 text-center">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stoklar -->
+    <div class="p-6 lg:ml-64 ">
+        <div class="p-6 bg-my-beyaz rounded-3xl">
+            <div class="flex items-center pb-4 justify-between">
+                <div class="flex items-center">
+                    <div class="pr-4 items-center ">
+                        <div class="flex flex-column sm:flex-row flex-wrap items-center justify-between ">
+                            <p class="font-bold text-xl text-my-siyah">Stoklarım</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="items-center bg-green-500 p-2 pl-4 pr-4 rounded-full ml-4">
+                        <button onClick={kaydet()} class="font-semibold text-my-beyaz text-md">Kaydet</button>
+                    </div>
+                    <div class="items-center bg-red-600 p-2 pl-4 pr-4 rounded-full ml-4">
+                        <button onClick={handleClearItems()} class="font-semibold text-my-beyaz text-md">Seçilenleri Sil</button>
+                    </div>
+                    <div class="pr-4 items-center pl-4">
+                        <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between">
+                            <label htmlFor="table-search" class="sr-only">Search</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-500 " aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
+                                </div>
+                                <input type="text" id="table-search" class="block p-2 ps-10 text-md text-gray-900 border border-gray-300 rounded-full w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for items"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="w-full text-sm text-left text-gray-500 font-medium">
+                <thead class="text-xs text-gray-600 uppercase bg-my-edbeyaz">
+                    <tr>
+                        <th scope="col" class="p-4"></th>
+                        <th scope="col" class="px-6 py-3">Stok Adı</th>
+                        <th scope="col" class="px-6 py-3">Ekleniş Tarihi</th>
+                        <th scope="col" class="px-6 py-3">Adet</th>
+                        <th scope="col" class="px-6 py-3">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody id="StokEkleGövdesi" class="bg-white divide-y divide-gray-200">
+                    <!-- JS ile doldurulacak -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript kodları buraya gelecek
+</script>
+
+</body>
+</html>
+
+<script>
+
+var cookies = document.cookie.split(';');
+var authToken = "";
+var user_id = "";
+let StokListe  = [];
+let secilenleriSil = [];
+
+
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.startsWith("auth_token=")) {
+        authToken = cookie.substring("auth_token=".length, cookie.length);
+        console.log("Auth Token: " + authToken);
+        break;
+    }
+}
+
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.startsWith("id=")) {
+        user_id = cookie.substring("id=".length, cookie.length);
+        console.log("User: " + user_id);
+        break;
+    }
+}
+
+function stokGetFetch(id) {
+    return fetch('http://localhost:5184/api/StokEntity/' + String(id), {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('asama2 başarılı:', data);
+        return data;
+    })
+    .catch(error => {
+        console.error('asam2 hatası:', error);
+        return [];
+    });
+}
+
+function  stokAddDbFetch(value) {
+    return fetch('http://localhost:5184/api/StokEntity', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(value)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('asama2 başarılı:', data);        
+        return data;
+    })
+    .catch(error => {
+        console.error('asam2 hatası:', error);
+    });
+}
+
+function stokUpdateDbFetch(value) {
+    return fetch('http://localhost:5184/api/StokEntity/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(value)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('İsteğin gönderilmesi başarılı:', data);
+        return data;
+    })
+    .catch(error => {
+        console.error('İsteğin gönderilmesinde hata:', error);
+    });
+}
+
+// Kullanım örneği:
+const veri = {
+    "id": 55,
+    "stokAdi": "tes21tqwe",
+    "adet": 22,
+    "date": "2024-02-19T12:07:30.434355Z",
+    "aciklama": "2",
+    "userEntityId": 2
+};
+
+  function deleteCardFetch(id) {
+    fetch(`http://localhost:5184/api/StokEntity/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Kart başarıyla silindi:', data);
+        // Kartın başarıyla silindiği bildirimi veya diğer gerekli işlemler burada yapılabilir.
+    })
+    .catch(error => {
+        console.error('Kart silinirken bir hata oluştu:', error);
+        // Hata durumunda kullanıcıya bir hata mesajı gösterilebilir veya diğer işlemler yapılabilir.
+    });
+}
+
+async function handleClearItems()
+{
+    var checkboxler = document.querySelectorAll('input[type="checkbox"]');
+    checkboxler.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            var kartId = checkbox.getAttribute('data-id');
+            console.log(kartId);
+            deleteCardFetch(kartId);
+        }
+    });
+    window.location.href = "/Stok/Index";    
+}
+
+async function kaydet()
+{
+    await stokUpdateDbFetch(veri);
+
+    StokListe.forEach(function(val){
+        var v = StokCreateLocal2(val);
+        console.log(v);
+        stokUpdateDbFetch(val);
+    });
+    window.location.href = "/Stok/Index";
+
+}
+
+function aaa(veri2)
+{
+     StokListe.push({
+        "id": veri2.id,
+        "stokAdi": veri2.stokAdi,
+        "adet": veri2.adet,
+        "date": "0002-02-23",
+        "aciklama": veri2.aciklama,
+        "userEntityId": parseInt( user_id)
+        } );
+    tabloyuGuncelle();
+}
+
+async function StokAddDb()
+{
+    var veri = StokCreateLocal();
+    var asd = {
+        "StokAdi": veri.stokAdi,
+        "Adet": veri.adet,
+        "Date": new Date(veri.date).toISOString(),
+        "Aciklama": veri.aciklama,
+        "UserEntityId": veri.userEntityId
+        }
+    var veri2 = await stokAddDbFetch(asd);
+    await aaa(veri2);
+
+}
+
+function StokCreateLocal() 
+{
+    const stokAdi = document.getElementById('EkleStokAdi').value;
+    const stokAdet = document.getElementById('EkleStokAdet').value;
+    const stokTarih = document.getElementById('EkleStokTarih').value;
+    const stokAciklama = document.getElementById('EkleStokAciklama').value;
+
+    const yeniStok = {
+        stokAdi: stokAdi,
+        adet: stokAdet,
+        date: stokTarih,
+        aciklama: stokAciklama,
+        userEntityId : user_id
+    };
+    return yeniStok;
+    @* StokListe.push(yeniStok); *@
+    @* return yeniStok; *@
+
+    @* stok_ekle_db(yeniStok);
+    console.log(yeniStok); *@
+}
+
+function StokCreateLocal2(value) 
+{
+    const yeniStok = {
+        id: value.id,
+        stokAdi: value.stokAdi,
+        adet: value.adet,
+        date: value.date,
+        aciklama: value.aciklama,
+        userEntityId : value.userEntityId
+    };
+    return yeniStok;
+    @* StokListe.push(yeniStok); *@
+    @* return yeniStok; *@
+
+    @* stok_ekle_db(yeniStok);
+    console.log(yeniStok); *@
+}
+
+function handleCheckboxChange(stokId) {
+    console.log("Seçilen stok adı:", stokId);
+}
+
+function ekleVeyaSil(stokId) {
+    var index = secilenleriSil.indexOf(stokId);
+    if (index === -1) {
+        secilenleriSil.push(stokId);
+        console.log(secilenleriSil)
+    } else {
+        secilenleriSil.splice(index, 1);
+        console.log(secilenleriSil)
+    }
+}
+
+function handleStokInputChange(stokId, elementId) {
+    var inputValue = document.getElementById(elementId).value;
+    StokListe.forEach(function(stok) {
+        if (stok.id === parseInt(stokId)) {
+            console.log(inputValue,stokId,elementId);
+            var propertyToUpdate = elementId.replace(stokId + '-', '');
+            console.log(propertyToUpdate);
+
+            if(propertyToUpdate == "adi")
+            {
+                stok["stokAdi"] = inputValue;
+            }
+            if(propertyToUpdate == "date")
+            {
+                stok["date"] = inputValue;
+            }
+            if(propertyToUpdate == "adet")
+            {
+                stok["adet"] = inputValue;
+            }
+            if(propertyToUpdate == "aciklama")
+            {   
+                stok["aciklama"] = inputValue;
+            }
+
+            tabloyuGuncelle();
+        }
+    });
+}
+
+async function StokListeGüncelle()
+{
+    data = await stokGetFetch(user_id);
+    StokListe = [];
+    data.forEach(function(val){
+        StokListe.push(StokCreateLocal2(val));
+    });
+    console.log(StokListe);
+    tabloyuGuncelle();
+}
+
+
+StokListeGüncelle();
+
+function tabloyuGuncelle() {
+    var tabloGovdesi = document.getElementById('StokEkleGövdesi');
+    tabloGovdesi.innerHTML = '';
+    StokListe.forEach(function(stok) {
+      console.log(stok);
+        var tabloHtml = `<tr>
+            <td class="w-4 p-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="${stok.id}-checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" data-id=${stok.id}/>
+                    <input type="hidden" id="${stok.id}-hidden" value="" />
+                </div>
+            </td>
+            <td>
+                <input id="${stok.id}-adi" onChange="handleStokInputChange('${stok.id}', '${stok.id}-adi')" value="${stok.stokAdi}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+            </td>
+            <td>
+                <input id="${stok.id}-tarih" onChange="handleStokInputChange('${stok.id}', '${stok.id}-tarih')" value="${new Date(stok.date).toLocaleDateString()}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            </td>
+            <td>
+                <input id="${stok.id}-adet" onChange="handleStokInputChange('${stok.id}', '${stok.id}-adet')" value="${stok.adet}" class="px-6 py-4 text-green-500">
+            </td>
+            <td>
+                <input id="${stok.id}-aciklama" onChange="handleStokInputChange('${stok.id}', '${stok.id}-aciklama')" value="${stok.aciklama}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            </td>
+        </tr>`;
+      tabloGovdesi.innerHTML += tabloHtml;
+    });
+}
+
+
+
+
+</script>
