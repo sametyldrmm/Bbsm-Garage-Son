@@ -86,7 +86,7 @@
                       </div>
                       <input type="text" id="tableSearch"
                         class="block p-2 ps-10 text-md text-gray-900 border border-gray-300 rounded-full w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Kartları ara"/>
+                        placeholder="Kartları ara..."/>
                     </div>
                   </div>
                 </div>
@@ -153,7 +153,7 @@
                             <td class="px-6 py-4 uppercase">
                                 @qwe.sasi
                             </td>
-                            <td class="px-6 py-4 text-blue-500">
+                            <td class="px-6 py-4 text-blue-500 giris-tarihi">
                                 @qwe.girisTarihi
                             </td>
                             <td class="px-6 py-4">
@@ -435,6 +435,41 @@ function KartEkleAsama2GeriDön()
   document.getElementById('notlar').value = kartEkle.notlar;
 }
 
+function formatDate(dateStr) {
+    try {
+        // Eğer tarih formatı 'DD/MM/YYYY' ise, onu 'YYYY-MM-DD' formatına dönüştür
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+            dateStr = convertDateFormat(dateStr);
+        }
+
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+            // Tarih geçerliyse, formatla ve döndür
+            return date.toLocaleDateString('tr-TR');
+        } else {
+            // Tarih geçersizse, uygun bir mesaj döndür
+            return "Geçersiz Tarih";
+        }
+    } catch (error) {
+        console.error("Tarih formatlama hatası: ", error);
+        return "Hata";
+    }
+}
+
+// Tarih formatını dönüştürme fonksiyonu
+function convertDateFormat(dateStr) {
+    const parts = dateStr.split('/');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+}
+
+// Örnek kullanım
+document.querySelectorAll('.giris-tarihi').forEach(function(element) {
+    var rawDate = element.textContent;
+    var formattedDate = formatDate(rawDate);
+    element.textContent = formattedDate;
+});
+
+
 function test2(id)
 {
     KartEkleAsama2List.forEach(function(kart) {
@@ -468,6 +503,7 @@ function test2(id)
 
     window.location.href = "/MainPage/Index";
 }
+
 
 async function test(teklifBool)
 {
@@ -581,6 +617,14 @@ function gonderKartEkleVerileri() {
     });
 }
 
+function SilAsama2(one,two,three)
+{
+  KartEkleAsama2List = KartEkleAsama2List.filter(function(item) {
+    return item.birimAdedi !== one && item.birimFiyati !== three && item.parcaAdi !== two;
+  });
+  tabloyuGuncelleAsama2();
+}
+
 function tabloyuGuncelleAsama2() {
       console.log("1111");
     var tabloGovdesi = document.getElementById('KartEkleAsama2Gövdesi');
@@ -594,7 +638,7 @@ function tabloyuGuncelleAsama2() {
             <td class="px-6 py-4 whitespace-nowrap">${kart.birimFiyati}</td>
             <td class="px-6 py-4 whitespace-nowrap">${kart.totalFiyat}</td>
             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                <button type="button" class="text-red-500 hover:text-red-700">
+                <button type="button" onClick={SilAsama2(${kart.birimAdedi},${kart.parcaAdi},${kart.birimFiyati})} class="text-red-500 hover:text-red-700">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </td>

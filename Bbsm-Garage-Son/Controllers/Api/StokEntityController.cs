@@ -24,7 +24,7 @@ namespace Bbsm_Garage_Son.Controllers
             var card = _stokService.GetStokById(id);
             if (card == null)
             {
-                return Ok();
+                return Ok(new {});
             }
             return Ok(card);
         }
@@ -44,7 +44,7 @@ namespace Bbsm_Garage_Son.Controllers
         public IActionResult UpdateCard([FromBody] StokEntity card)
         {
             _stokService.UpdateStok(card);
-            return Ok();
+            return Ok(new {});
         }
 
 
@@ -52,7 +52,7 @@ namespace Bbsm_Garage_Son.Controllers
         public IActionResult UpdateOrAddCard(int id,[FromBody] StokEntity card)
         {
             _stokService.UpdateOrAdd(id,card);
-            return Ok();
+            return Ok(new {});
         }
 
         // [Authorize]

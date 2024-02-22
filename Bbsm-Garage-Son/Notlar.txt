@@ -33,3 +33,8 @@ Kalanlar
 // güzelleştirme kod 
 
 js de ortak kullanılan yapılar doğru isimlendirmeler ile include edilecek.
+
+
+
+
+

@@ -43,3 +43,7 @@ namespace Bbsm_Garage_Son.Services
         }
     }
 }
+
+
+// detat toplam fiyat
+// detay toplam fiyat

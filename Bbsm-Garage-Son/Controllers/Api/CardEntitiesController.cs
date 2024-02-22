@@ -57,7 +57,7 @@ namespace Bbsm_Garage_Son.Controllers
             try
             {
                 _kartService.AddTwoStageData(id, twoState);
-                return Ok();
+                return Ok(new {});
             }
             catch (Exception ex)
             {
@@ -80,13 +80,13 @@ namespace Bbsm_Garage_Son.Controllers
             }
         }
 
-        [HttpGet("TwoStageData")] // İki aşamalı veri ekleme işlemi
+        [HttpPut("TwoStageData")] // İki aşamalı veri ekleme işlemi
         public IActionResult updateTwoStageData( [FromBody] CardTwoStageEntity cardTwoStageEntity)
         {
             try
             {
                 _CardTwoState.UpdateTwoStageData(cardTwoStageEntity);
-                return Ok();
+                return Ok(new {});
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace Bbsm_Garage_Son.Controllers
         public IActionResult UpdateCard([FromBody] CardEntity card)
         {
             _kartService.UpdateCard(card);
-            return Ok();
+            return Ok(new {});
         }
 
         // [Authorize]
@@ -107,7 +107,14 @@ namespace Bbsm_Garage_Son.Controllers
         public IActionResult DeleteCard(int id)
         {
             _kartService.DeleteCard(id);
-            return Ok();
+            return Ok(new {});
+        }
+
+        [HttpDelete("TwoStageData/{id}")]
+        public IActionResult TwoStageDeleteCard(int id)
+        {
+            _CardTwoState.DeleteCard(id);
+            return Ok(new {});
         }
     }
 }

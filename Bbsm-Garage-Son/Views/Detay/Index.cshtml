@@ -68,7 +68,7 @@
     </table>    
 
     <div class="mt-6 flex justify-end">
-      <span class="text-xl font-semibold text-gray-900">Toplam Fiyat: 12.350,00 ₺</span>
+      <span id="ToplamFiyat" class="text-xl font-semibold text-gray-900">Toplam Fiyat: 12.350,00 ₺</span>
     </div>
   </div>
 </div>
@@ -76,6 +76,15 @@
 
 
 <script>
+
+  function toplamFiyatiGuncelle(yeniFiyat) {
+  // "ToplamFiyat" ID'sine sahip elementi bul
+  var toplamFiyatElementi = document.getElementById('ToplamFiyat');
+
+  // Elementin metnini yeni değerle güncelle
+  toplamFiyatElementi.textContent = 'Toplam Fiyat: ' + yeniFiyat + ' ₺';
+}
+
 var myDataJson = '@Html.Raw(@ViewBag.detay)';
 var myData = JSON.parse(myDataJson);
 var KartEkleAsama2List = myData.KartAsama2List;
@@ -93,6 +102,7 @@ function handleInputChange(kartId, elementId) {
         }
     }); 
 }
+
 
 function stokUpdateDbFetch(value) {
     return fetch('http://localhost:5184/api/CardEntities/', {
@@ -140,28 +150,59 @@ function stokUpdateCardTwoDbFetch(value) {
     });
 }
 
+function CardTwoDeleteDbFetch(id) {
+    return fetch(`http://localhost:5184/api/CardEntities/TwoStageData/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('İsteğin gönderilmesi başarılı:', data);
+        return data;
+    })
+    .catch(error => {
+        console.error('İsteğin gönderilmesinde hata:', error);
+    });
+}
+
 async function Kaydet()
 {
-  console.log(KartEkleAsama2List);
-  stokUpdateDbFetch(Kart);
-
-    console.log("aaa");
+  KartGüncelleLocal();
+  stokUpdateDbFetch(await Kart);
+   await KartEkleAsama2List.forEach(function(value){
+     stokUpdateCardTwoDbFetch( value);
+  });
 }
 
 function testttttttt()
 {
-
+    var checkboxler = document.querySelectorAll('input[type="checkbox"]');
+    checkboxler.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            var kartId = checkbox.getAttribute('data-id');
+            console.log(kartId);
+            CardTwoDeleteDbFetch( kartId);
+        }
+    });
+    location.reload();
 }
 
 function tabloyuGuncelleAsama2() {
     var tabloGovdesi = document.getElementById('KartEkleAsama2Gövdesi');
     var tabloHtml = '';
-
+    var total = 0;
     KartEkleAsama2List.forEach(function(kart) {
         tabloHtml += `<tr>
             <td class="w-4 p-4">
                 <div class="flex items-center">
-                    <input id="${kart.id}-check" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"  />
+                    <input id="${kart.id}-check" type="checkbox" class="checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" data-id=${kart.id} />
                     <input type="hidden"  value="" />
                 </div>
             </td>
@@ -178,6 +219,13 @@ function tabloyuGuncelleAsama2() {
             </td>    
         </tr>`;
     });
+    total = 0;
+    KartEkleAsama2List.forEach(function(value){
+      total += value.birimAdedi * value.birimFiyati;
+    });
+    
+    toplamFiyatiGuncelle(total);
+
 
     tabloGovdesi.innerHTML = tabloHtml;
 }
@@ -204,7 +252,7 @@ function KartGüncelle()
   document.getElementById('AdSoyad').value = Kart.AdSoyad;
   document.getElementById('TelNo').value = Kart.TelNo
   document.getElementById('MarkaModel').value = Kart.MarkaModel;
-  document.getElementById('GirisTarihi').value = Kart.GirisTarihi;
+  document.getElementById('GirisTarihi').value = new Date(Kart.GirisTarihi).toISOString().split('T')[0];;
   document.getElementById('Plaka').value = Kart.Plaka;
   document.getElementById('Km').value = Kart.Km;
   document.getElementById('Sasi').value = Kart.Sasi;
@@ -212,6 +260,21 @@ function KartGüncelle()
   document.getElementById('Renk').value = Kart.Renk;
   document.getElementById('adres').value = Kart.Adres;
   document.getElementById('notlar').value = Kart.Notlar; 
+}
+
+function KartGüncelleLocal() {
+  Kart.AdSoyad = document.getElementById('AdSoyad').value;
+  Kart.TelNo = document.getElementById('TelNo').value;
+  Kart.MarkaModel = document.getElementById('MarkaModel').value;
+  // GirisTarihi alanı yorum satırı olarak kalıyor
+  Kart.GirisTarihi = new Date( document.getElementById('GirisTarihi').value);
+  Kart.Plaka = document.getElementById('Plaka').value;
+  Kart.Km = document.getElementById('Km').value;
+  Kart.Sasi = document.getElementById('Sasi').value;
+  Kart.ModelYili = document.getElementById('ModelYili').value;
+  Kart.Renk = document.getElementById('Renk').value;
+  Kart.Adres = document.getElementById('adres').value;
+  Kart.Notlar = document.getElementById('notlar').value;
 }
 
 KartGüncelle();

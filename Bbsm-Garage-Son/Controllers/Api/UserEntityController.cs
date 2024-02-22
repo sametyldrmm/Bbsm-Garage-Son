@@ -53,7 +53,7 @@ namespace Bbsm_Garage_Son.Controllers
         //     try
         //     {
         //         _UserService.AddTwoStageData(id, twoState);
-        //         return Ok();
+        //         return Ok(new {});
         //     }
         //     catch (Exception ex)
         //     {
@@ -79,7 +79,7 @@ namespace Bbsm_Garage_Son.Controllers
         public IActionResult DeleteUser(int id)
         {
             _UserService.DeleteUser(id);
-            return Ok();
+            return Ok(new {});
         }
     }
 }

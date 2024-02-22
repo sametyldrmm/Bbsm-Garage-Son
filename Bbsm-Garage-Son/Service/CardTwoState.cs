@@ -45,6 +45,17 @@ namespace Bbsm_Garage_Son.Services
                 // Örneğin, bir hata fırlatılabilir veya bir loglama işlemi yapılabilir.
             }
         }
+    
+        public void DeleteCard(int id)
+        {
+            var card = _context.CardTwoStages.FirstOrDefault(c => c.Id == id);
+            if (card != null)
+            {
+                _context.CardTwoStages.Remove(card);
+                _context.SaveChanges();
+            }
+        }
     }
+    
 
 }
